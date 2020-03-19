@@ -22,6 +22,7 @@ function operate(op, num1, num2) {
 	return op(num1, num2);
 }
 
+// Initialize variables
 var temp;
 var tempOp;
 var opCount = 0;
@@ -29,6 +30,8 @@ var opStore = [];
 var fullValue = [];
 var tempValue = [];
 var valueStore = [];
+
+// Digit events
 var digits = document.querySelectorAll("#digit");
 digits.forEach((digit) => {
 	digit.addEventListener('click', (e) => {
@@ -41,58 +44,88 @@ digits.forEach((digit) => {
 
 		// Add to fullValue
 		fullValue.push(tempValue);
-		valueStore.push(parseInt(fullValue.join('')));
-		document.getElementById("screen").value = fullValue.join('');
-		// valuesArray.push(tempValue);
-		// if (isNaN(parseInt(valuesArray[valuesArray.length - 2]))) {
-		// 	var op = window[valuesArray[valuesArray.length - 2]];
-		// 	var num1 = parseInt(valuesArray[valuesArray.length - 3]);
-		// 	var num2 = parseInt(valuesArray[valuesArray.length - 1]);
-		// 	var result = operate(op, num1, num2);
-		// 	valuesArray.push(result);
-		// 	document.getElementById("screen").value = result;
-		// }
+		
+		// Display input
+
+		// Round number if it's too long
+		if (fullValue.length > 9){
+			fullValue.pop();
+		};
+		document.getElementById("screen").value = (fullValue.join(''));
+			
 	});
 });
 
-// Operators
+// Operator events
 var operators = document.querySelectorAll(".operator");
 operators.forEach((op) => {
 	op.addEventListener("click", (e) => {
+
+		// Log event
 		console.log(e);
 		console.log(e.target.id);
-
+		
+		// Check if fullValue is empty
+		if(!isNaN(parseInt(fullValue))){
+			valueStore.push(+(fullValue.join('')));
+		}
+		
 		fullValue = [];
+
+		// Temporary operand variable
 		tempOp = e.target.id;
+
+		// Push operand to stack
 		opStore.push(tempOp);
+
+		// Increase counter by one
 		opCount++;
+
+		// Check if need to operate
 		if(opCount > 1){
 			temp = operate(window[opStore[opStore.length-2]], valueStore[valueStore.length-1], valueStore[valueStore.length-2]);
-			fullValue.push(temp);
-			valueStore.push(parseInt(temp));
+			// fullValue.push(temp);
+
+			// Round number if it's too long
+			if(temp.length > 9){
+				temp = +temp.toFixed(9);
+				valueStore.push(temp);
+			}else{
+				valueStore.push(+(temp));
+			};
+
+			// Set operand counter
 			opCount = 1;
 		}
 
-		document.getElementById("screen").value=fullValue.join('');
-		fullValue = [];
+		// Display value on screen
+		document.getElementById("screen").value=valueStore[valueStore.length-1];
+		// fullValue = [];
 	});
 });
 
 // Equals button
-var equalSign = document.querySelector(".equal-sign");
-equalSign.addEventListener("click", (e) => {
+var equalButton = document.querySelector(".equal-sign");
+equalButton.addEventListener("click", (e) => {
 	console.log(e);
+	valueStore.push(+(fullValue.join('')));
 	var result = operate(window[tempOp], valueStore[valueStore.length-2], valueStore[valueStore.length-1]);
+	
+	// Round number if long
+	if(result.toString().length > 9){
+		result = (+result).toFixed(9);
+	};
 	document.getElementById("screen").value=result;
 	fullValue = [];
-	valueStore = [];
+	// valueStore = [];
 	valueStore.push(result);
+	// fullValue.push(result);
 	opCount = 0;
 });
 
 // All clear button
-var allClear = document.querySelector(".all-clear");
-allClear.addEventListener("click", (e) => {
+var allClearButton = document.querySelector(".all-clear");
+allClearButton.addEventListener("click", (e) => {
 	opCount = 0;
 	opStore = [];
 	fullValue = [];
@@ -101,3 +134,20 @@ allClear.addEventListener("click", (e) => {
 	document.getElementById("screen").value = 0;
 });
 
+// Decimal button
+var decButton = document.querySelector(".decimal");
+decButton.addEventListener("click", (e) => {
+	console.log(e.target.value);
+	fullValue.push(e.target.value);
+	
+	// Display input
+	document.getElementById("screen").value = fullValue.join('');
+})
+
+// Backspace button
+var backButton = document.querySelector(".backspace");
+backButton.addEventListener("click", (e) => {
+	console.log(e);
+	fullValue.pop();
+	document.getElementById("screen").value = fullValue.join('');
+})
