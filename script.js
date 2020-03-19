@@ -138,7 +138,12 @@ allClearButton.addEventListener("click", (e) => {
 var decButton = document.querySelector(".decimal");
 decButton.addEventListener("click", (e) => {
 	console.log(e.target.value);
-	fullValue.push(e.target.value);
+
+	// Check if there is an existing decimal sign
+	if (!fullValue.find(dec => dec == '.')){
+		fullValue.push(e.target.value);
+	}
+	
 	
 	// Display input
 	document.getElementById("screen").value = fullValue.join('');
