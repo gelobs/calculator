@@ -83,7 +83,7 @@ operators.forEach((op) => {
 
 		// Check if need to operate
 		if(opCount > 1){
-			temp = operate(window[opStore[opStore.length-2]], valueStore[valueStore.length-1], valueStore[valueStore.length-2]);
+			temp = operate(window[opStore[opStore.length-2]], valueStore[valueStore.length-2], valueStore[valueStore.length-1]);
 			// fullValue.push(temp);
 
 			// Round number if it's too long
@@ -100,7 +100,6 @@ operators.forEach((op) => {
 
 		// Display value on screen
 		document.getElementById("screen").value=valueStore[valueStore.length-1];
-		// fullValue = [];
 	});
 });
 
@@ -108,18 +107,39 @@ operators.forEach((op) => {
 var equalButton = document.querySelector(".equal-sign");
 equalButton.addEventListener("click", (e) => {
 	console.log(e);
-	valueStore.push(+(fullValue.join('')));
-	var result = operate(window[tempOp], valueStore[valueStore.length-2], valueStore[valueStore.length-1]);
-	
-	// Round number if long
-	if(result.toString().length > 9){
-		result = (+result).toFixed(9);
-	};
-	document.getElementById("screen").value=result;
-	fullValue = [];
-	// valueStore = [];
-	valueStore.push(result);
-	// fullValue.push(result);
+	// Check if it is correct to press equals button
+	if (!isNaN(fullValue.join(''))) {
+		valueStore.push(+(fullValue.join('')));
+		var result = operate(window[tempOp], valueStore[valueStore.length - 2], valueStore[valueStore.length - 1]);
+
+		// Round number if long
+		if (result.toString().length > 9) {
+			result = (+result).toFixed(9);
+		};
+
+		// Warn user if tried to divide by zero
+		if (result == Infinity){
+			// Alert message
+			window.alert('You tried to divide by zero.')
+
+			// Clear all
+			valueStore=[];
+			opCount = 0;
+			opStore = [];
+			tempValue = [];
+			valueStore = [];
+
+			// Display 0
+			document.getElementById("screen").value = 0;
+		}else{
+			valueStore.push(result);
+			document.getElementById("screen").value = result;
+		}
+		
+		// Clear full temporary value
+		fullValue = [];
+	}
+
 	opCount = 0;
 });
 
