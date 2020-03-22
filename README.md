@@ -1,0 +1,2 @@
+This project is an on-screen calculator made using JavaScript, HTML and CSS. Specifically the UI is made with CSS grid. You can do simple arithmetic operations, addition, subtraction, multiplication and division with integers and floats. For now, only mouse click support is included. In a fourthcoming version, keyboard support will be included. 
+From The Odin Project's [curriculum](https://www.theodinproject.com/courses/web-development-101/lessons/calculator)
