@@ -36,8 +36,8 @@ var digits = document.querySelectorAll("#digit");
 digits.forEach((digit) => {
 	digit.addEventListener('click', (e) => {
 		// console.logs
-		console.log(e);
-		console.log(e.target.value);
+		// console.log(e);
+		// console.log(e.target.value);
 
 		// Temporary input value
 		var tempValue = e.target.value;
@@ -62,17 +62,18 @@ operators.forEach((op) => {
 	op.addEventListener("click", (e) => {
 
 		// Log event
-		console.log(e);
-		console.log(e.target.id);
+		// console.log(e);
+		// console.log(e.target.id);
 		
 		// Check if fullValue is empty
 		if(!isNaN(parseInt(fullValue))){
 			valueStore.push(+(fullValue.join('')));
 		}
 		
+		// Clear full temporary value
 		fullValue = [];
 
-		// Temporary operand variable
+		// Temporary operator string
 		tempOp = e.target.id;
 
 		// Push operand to stack
@@ -94,7 +95,7 @@ operators.forEach((op) => {
 				valueStore.push(+(temp));
 			};
 
-			// Set operand counter
+			// Set operator counter
 			opCount = 1;
 		}
 
@@ -106,7 +107,7 @@ operators.forEach((op) => {
 // Equals button
 var equalButton = document.querySelector(".equal-sign");
 equalButton.addEventListener("click", (e) => {
-	console.log(e);
+	// console.log(e);
 	// Check if it is correct to press equals button
 	if (!isNaN(fullValue.join(''))) {
 		valueStore.push(+(fullValue.join('')));
@@ -134,10 +135,11 @@ equalButton.addEventListener("click", (e) => {
 		}else{
 			valueStore.push(result);
 			document.getElementById("screen").value = result;
+			fullValue=result.toString().split('');
 		}
 		
 		// Clear full temporary value
-		fullValue = [];
+		// fullValue = [];
 	}
 
 	opCount = 0;
@@ -157,7 +159,7 @@ allClearButton.addEventListener("click", (e) => {
 // Decimal button
 var decButton = document.querySelector(".decimal");
 decButton.addEventListener("click", (e) => {
-	console.log(e.target.value);
+	// console.log(e.target.value);
 
 	// Check if there is an existing decimal sign
 	if (!fullValue.find(dec => dec == '.')){
@@ -172,7 +174,41 @@ decButton.addEventListener("click", (e) => {
 // Backspace button
 var backButton = document.querySelector(".backspace");
 backButton.addEventListener("click", (e) => {
-	console.log(e);
+	// console.log(e);
 	fullValue.pop();
 	document.getElementById("screen").value = fullValue.join('');
-})
+});
+
+// Add keyboard support
+
+// using jQuery
+// $('.element').on('keyup keypress blur change', function(e) {
+//     // e.type is the type of event fired
+// });
+
+/* Add one or more listeners to an element
+** @param {DOMElement} element - DOM element to add listeners to
+** @param {string} eventNames - space separated list of event names, e.g. 'click change'
+** @param {Function} listener - function to attach for each event as a listener
+*/
+// function addListenerMulti(element, eventNames, listener) {
+// 	var events = eventNames.split(' ');
+// 	for (var i=0, iLen=events.length; i<iLen; i++) {
+// 	  element.addEventListener(events[i], listener, false);
+// 	}
+//   }
+// function addListenerMulti(el, s, fn) {
+// 	s.split(' ').forEach(e => el.addEventListener(e, fn, false));
+// }; 
+
+// //   addListenerMulti(window, 'click keydown', function(){…});
+// var backButton = document.querySelector(".backspace");
+// addListenerMulti(backButton, 'keydown click', delElement);
+// function delElement(e){
+// 	console.log(e);
+// 	if(e.keyCode == 8 || e.target.className == "backspace"){
+// 		fullValue.pop();
+// 		document.getElementById("screen").value = fullValue.join('');
+// 	};
+	
+// };
